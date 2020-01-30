@@ -5,13 +5,13 @@ const Card = props => {
 };
 
 const cardStyle = {
+  display: "flex",
   flex: 1,
-  margin: "5%",
+  flexDirection: "row",
+  margin: "1%",
   padding: "1%",
-  alignItems: "center",
   justifyContent: "center",
-  border: "solid 1px black",
-  backgroundColor: "white",
+  backgroundColor: "#bbb",
   color: "#444"
 };
 
