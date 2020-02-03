@@ -1,40 +1,39 @@
 import React from "react";
+
 import Card from "./components/Card";
-import Cell from "./components/Cell";
 import Header from "./components/Header";
-import Text from "./components/Text";
+import TextBlock from "./components/TextBlock";
 import "./App.css";
+
 
 function App() {
   return (
-    <div className="App">
-      <Header title="GraphQl test" />
-      <Card style={{backgroundColor: "white"}}>
-        <Text>
-          This uses GraphQl to access some of the results from the State of
-          JS survey and summarises them
-        </Text>
-      </Card>
-      <Card>
-        <Cell style={{width: "40%"}}>lslslslsl</Cell>
-        <Cell style={{width: "20%"}}></Cell>
-        <Cell style={{width: "20%"}}></Cell>
-        <Cell style={{width: "20%"}}></Cell>
-      </Card>
-      <Card>
-        <Cell style={{width: "40%"}}>lslslslsl</Cell>
-        <Cell style={{width: "20%"}}></Cell>
-        <Cell style={{width: "20%"}}></Cell>
-        <Cell style={{width: "20%"}}></Cell>
-      </Card>
-      <Card>
-        <Cell style={{width: "40%"}}>lslslslsl</Cell>
-        <Cell style={{width: "20%"}}></Cell>
-        <Cell style={{width: "20%"}}></Cell>
-        <Cell style={{width: "20%"}}></Cell>
-      </Card>
+    <div className="App" style={appStyle}>
+      <Header title="GraphQL test" />
+      <TextBlock>
+        The State of Javascript survey collected responses from over 22,000
+        developers in 2019. Participants were asked a series of questions about
+        different aspects of JavaScript, including front and back-end
+        frameworks, ES6, mobile development, and testing.
+      </TextBlock>
+      <TextBlock>
+        The final results are summarised in a report and changes from previous
+        surveys analysed and visualised using a variety of tools.
+      </TextBlock>
+      <Card />
+      <Card />
+      <Card />
+      <TextBlock>
+        The State of JavaScript Survey is created and maintained by Sacha Greif
+        (Design, writing, coding) and Raphaël Benitte (Data analysis, data
+        visualizations). Through their website stateofjs.com the raw data is
+        made available through a GraphQL API. This app uses GraphQL queries to
+        access some of the results and summarises them.
+      </TextBlock>
     </div>
   );
 }
+
+const appStyle = {};
 
 export default App;

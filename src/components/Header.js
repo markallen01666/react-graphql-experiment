@@ -3,21 +3,19 @@ import React from "react";
 const Header = props => {
   return (
     <div style={headerStyle}>
-      <h1 style={{...titleStyle, ...props.style}}>{props.title}</h1>
+      <h1 style={{ ...titleStyle, ...props.style }}>{props.title}</h1>
     </div>
   );
 };
 
 const headerStyle = {
-  width: "100%",
-  height: 80,
-  paddingTop: 30,
-  color: "white",
-  backgroundColor: "grey",
-  alignItems: "center",
-  justifyContent: "center"
+ display: "flex",
+ color: "white",
+ backgroundColor: "#5b8c85"
 };
 const titleStyle = {
+  margin: "auto",
+  padding: 20,
   fontSize: 24
 };
 

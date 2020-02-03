@@ -5,11 +5,8 @@ const Cell = props => {
 };
 
 const cellStyle = {
-  flexDirection: "row",
   margin: "1%",
   padding: "1%",
-  alignItems: "center",
-  justifyContent: "center",
   border: "solid 1px black",
   backgroundColor: "white",
   color: "#444"
