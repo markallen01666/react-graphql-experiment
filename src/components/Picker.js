@@ -1,8 +1,7 @@
 import React from "react";
 
 const Picker = props => {
-  const selectHandler = (d) => {
-    console.log(d);
+  const selectHandler = () => {
     let e = document.getElementById("selecter").value;
     props.changeTool(e);
   };

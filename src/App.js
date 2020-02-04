@@ -5,6 +5,50 @@ import Header from "./components/Header";
 import TextBlock from "./components/TextBlock";
 import "./App.css";
 
+// read and process survey results 
+let toolList = ["react", "angular", "vuejs", "jest", "express", "reactnative" ];
+let rawSurveyResults = [];
+
+for (let i=0; i < toolList.length; i++) {
+  console.log("toolList:");
+  console.log(toolList[i]);
+  // build query
+  let query = `
+  query {
+    survey(survey: js) {
+      tool(id: ${toolList[i]}) {
+        id
+        experience {
+          allYears{
+            year
+            total
+            awarenessInterestSatisfaction {
+              awareness
+              interest
+              satisfaction
+            }
+          }
+        }
+      }
+    }
+  }`;
+  // execute query
+  const url = "https://api.stateofjs.com/graphql";
+  const opts = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query })
+  };
+  fetch(url, opts)
+    .then(res => {
+      rawSurveyResults.push( res.json());
+    })
+    .catch(console.error); 
+} // -- end of read and process survey results --
+
+console.log("Raw results:");
+console.log(rawSurveyResults);
+
 
 function App() {
   return (
