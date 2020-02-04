@@ -5,11 +5,11 @@ import Header from "./components/Header";
 import TextBlock from "./components/TextBlock";
 import "./App.css";
 
-// read and process survey results 
-let toolList = ["react", "angular", "vuejs", "jest", "express", "reactnative" ];
-let rawSurveyResults = [];
+// read and process survey results
+let toolList = ["react", "angular", "vuejs", "jest", "express", "reactnative"];
+let surveyResults = {};
 
-for (let i=0; i < toolList.length; i++) {
+for (let i = 0; i < toolList.length; i++) {
   console.log("toolList:");
   console.log(toolList[i]);
   // build query
@@ -40,15 +40,14 @@ for (let i=0; i < toolList.length; i++) {
     body: JSON.stringify({ query })
   };
   fetch(url, opts)
-    .then(res => {
-      rawSurveyResults.push( res.json());
+    .then(res => res.json())
+    .then(resJSON => {
+      surveyResults[resJSON.data.survey.tool.id] = "tool" 
     })
-    .catch(console.error); 
+    .catch(console.error);
 } // -- end of read and process survey results --
-
-console.log("Raw results:");
-console.log(rawSurveyResults);
-
+console.log("Results");
+console.log(surveyResults);
 
 function App() {
   return (
