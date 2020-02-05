@@ -17,7 +17,6 @@ const Picker = props => {
         <option value="angular">Angular</option>
         <option value="vuejs">Vue</option>
         <option value="jest">Jest</option>
-        <option value="express">Express</option>
         <option value="reactnative">React Native</option>
       </select>
     </div>

@@ -5,13 +5,23 @@ import Picker from "./Picker";
 
 const Card = props => {
   const [queryTool, setqueryTool] = useState("none");
-  const [awareness, setAwareness] = useState(10);
-  const [interest, setInterest] = useState(15);
-  const [satisfaction, setSatisfaction] = useState(35);
-  const [participants, setParticipants] = useState(20324);
+  const [results, setResults] = useState({
+    awareness: 0,
+    interest: 0,
+    satisfaction: 0,
+    participants: 0
+  });
 
   const toolChangedHandler = toolName => {
+    setqueryTool(toolName);
+    setResults({
+      awareness: props.results[toolName].awareness,
+      interest: props.results[toolName].interest,
+      satisfaction: props.results[toolName].satisfaction,
+      participants: props.results[toolName].total
+    });
     console.log(`Tool changed to: ${toolName}`);
+    console.log(results);
   };
 
   return (
@@ -19,10 +29,10 @@ const Card = props => {
       <Cell style={{ flex: "1" }}>
         <Picker changeTool={toolChangedHandler} value={queryTool} />
       </Cell>
-      <Cell style={{ flex: "2" }}>Awareness: {awareness}%</Cell>
-      <Cell style={{ flex: "2" }}>Interest: {interest}%</Cell>
-      <Cell style={{ flex: "2" }}>Satisfaction: {satisfaction}%</Cell>
-      <Cell style={{ flex: "2" }}>Participants: {participants}%</Cell>
+      <Cell style={{ flex: "2" }}>Awareness: {results.awareness}%</Cell>
+      <Cell style={{ flex: "2" }}>Interest: {results.interest}%</Cell>
+      <Cell style={{ flex: "2" }}>Satisfaction: {results.satisfaction}%</Cell>
+      <Cell style={{ flex: "2" }}>Participants: {results.participants}</Cell>
     </div>
   );
 };

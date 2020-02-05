@@ -6,12 +6,10 @@ import TextBlock from "./components/TextBlock";
 import "./App.css";
 
 // read and process survey results
-let toolList = ["react", "angular", "vuejs", "jest", "express", "reactnative"];
+let toolList = ["react", "angular", "vuejs", "jest", "reactnative"];
 let surveyResults = {};
 
 for (let i = 0; i < toolList.length; i++) {
-  console.log("toolList:");
-  console.log(toolList[i]);
   // build query
   let query = `
   query {
@@ -42,11 +40,16 @@ for (let i = 0; i < toolList.length; i++) {
   fetch(url, opts)
     .then(res => res.json())
     .then(resJSON => {
-      surveyResults[resJSON.data.survey.tool.id] = "tool" 
+      // extract required data into surveyResults
+      surveyResults[resJSON.data.survey.tool.id] = {
+        "total": resJSON.data.survey.tool.experience.allYears["3"].total,
+        "awareness": resJSON.data.survey.tool.experience.allYears["3"].awarenessInterestSatisfaction.awareness,
+        "interest": resJSON.data.survey.tool.experience.allYears["3"].awarenessInterestSatisfaction.interest,
+        "satisfaction": resJSON.data.survey.tool.experience.allYears["3"].awarenessInterestSatisfaction.satisfaction
+      } 
     })
     .catch(console.error);
 } // -- end of read and process survey results --
-console.log("Results");
 console.log(surveyResults);
 
 function App() {
@@ -63,9 +66,9 @@ function App() {
         The final results are summarised in a report and changes from previous
         surveys analysed and visualised using a variety of tools.
       </TextBlock>
-      <Card />
-      <Card />
-      <Card />
+      <Card id="card-1" results={surveyResults} />
+      <Card id="card-2" results={surveyResults} />
+      <Card id="card-3" results={surveyResults} />
       <TextBlock>
         The State of JavaScript Survey is created and maintained by Sacha Greif
         (Design, writing, coding) and Raphaël Benitte (Data analysis, data
@@ -77,6 +80,10 @@ function App() {
   );
 }
 
-const appStyle = {};
+const appStyle = {
+  display: "flex",
+  flexDirection: "column",
+  flex: 1,
+};
 
 export default App;
