@@ -1,3 +1,37 @@
+/* 
+N.B. need to restructure code so that all the state functionality is handled in the App.js file while
+Card.js concentrates on presentation and Picker.js handles selection of tool 
+In App.js need to use useState() to setup a JS object for display fields on the 3 cards - e.g.
+
+const [displaydata setdisplayData] = useState({
+  card-1: {
+    awareness: 0,
+    interest: 0,
+    satisfaction: 0,
+    participants: 0
+  },
+  card-2: {
+    awareness: 0,
+    interest: 0,
+    satisfaction: 0,
+    participants: 0
+  },
+  card-3: {
+    awareness: 0,
+    interest: 0,
+    satisfaction: 0,
+    participants: 0
+  }
+});
+
+The state values in the object will need to be passed to Card.js and displayed and changes to the selected tool
+will have to be passed up to App.js to modify the state object when triggered by a Picker selection activating
+the "toolChangedHandler"
+
+Also - check out useReducer() as an alternative to useState to see if it works better with this problem
+
+*/
+
 import React from "react";
 
 import Card from "./components/Card";
@@ -42,11 +76,17 @@ for (let i = 0; i < toolList.length; i++) {
     .then(resJSON => {
       // extract required data into surveyResults
       surveyResults[resJSON.data.survey.tool.id] = {
-        "total": resJSON.data.survey.tool.experience.allYears["3"].total,
-        "awareness": resJSON.data.survey.tool.experience.allYears["3"].awarenessInterestSatisfaction.awareness,
-        "interest": resJSON.data.survey.tool.experience.allYears["3"].awarenessInterestSatisfaction.interest,
-        "satisfaction": resJSON.data.survey.tool.experience.allYears["3"].awarenessInterestSatisfaction.satisfaction
-      } 
+        total: resJSON.data.survey.tool.experience.allYears["3"].total,
+        awareness:
+          resJSON.data.survey.tool.experience.allYears["3"]
+            .awarenessInterestSatisfaction.awareness,
+        interest:
+          resJSON.data.survey.tool.experience.allYears["3"]
+            .awarenessInterestSatisfaction.interest,
+        satisfaction:
+          resJSON.data.survey.tool.experience.allYears["3"]
+            .awarenessInterestSatisfaction.satisfaction
+      };
     })
     .catch(console.error);
 } // -- end of read and process survey results --
@@ -83,7 +123,7 @@ function App() {
 const appStyle = {
   display: "flex",
   flexDirection: "column",
-  flex: 1,
+  flex: 1
 };
 
 export default App;
