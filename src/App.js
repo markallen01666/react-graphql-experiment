@@ -3,26 +3,7 @@ N.B. need to restructure code so that all the state functionality is handled in 
 Card.js concentrates on presentation and Picker.js handles selection of tool 
 In App.js need to use useState() to setup a JS object for display fields on the 3 cards - e.g.
 
-const [displaydata setdisplayData] = useState({
-  card-1: {
-    awareness: 0,
-    interest: 0,
-    satisfaction: 0,
-    participants: 0
-  },
-  card-2: {
-    awareness: 0,
-    interest: 0,
-    satisfaction: 0,
-    participants: 0
-  },
-  card-3: {
-    awareness: 0,
-    interest: 0,
-    satisfaction: 0,
-    participants: 0
-  }
-});
+
 
 The state values in the object will need to be passed to Card.js and displayed and changes to the selected tool
 will have to be passed up to App.js to modify the state object when triggered by a Picker selection activating
@@ -34,7 +15,7 @@ Also - check out useReducer() as an alternative to useState to see if it works b
 
 */
 
-import React from "react";
+import React, { useState } from "react";
 
 import Card from "./components/Card";
 import Header from "./components/Header";
@@ -94,6 +75,58 @@ for (let i = 0; i < toolList.length; i++) {
 } // -- end of read and process survey results --
 
 function App() {
+  // values displayed in cards
+  const [displayData, setdisplayData] = useState({
+    card1: {
+      tool: "none",
+      awareness: 0,
+      interest: 0,
+      satisfaction: 0,
+      participants: 0
+    },
+    card2: {
+      tool: "none",
+      awareness: 0,
+      interest: 0,
+      satisfaction: 0,
+      participants: 0
+    },
+    card3: {
+      tool: "none",
+      awareness: 0,
+      interest: 0,
+      satisfaction: 0,
+      participants: 0
+    }
+  });
+
+  // change displayed values based on Picker choice
+  const changeDisplayHandler = (changes) => {
+    if (changes[1] === "none") {
+      setdisplayData({
+        ...displayData,
+        [changes[0]]: {
+          awareness: 0,
+          interest: 0,
+          satisfaction: 0,
+          participants: 0
+        }
+      });
+    } else {
+      setdisplayData({
+        ...displayData,
+        [changes[0]]: {
+          awareness: surveyResults[changes[1]].awareness,
+          interest: surveyResults[changes[1]].interest,
+          satisfaction: surveyResults[changes[1]].satisfaction,
+          participants: surveyResults[changes[1]].participants
+        }
+      });
+    }
+    setdisplayData({ ...displayData, [changes[0]]: changes[1] });
+    console.log(displayData)
+  };
+
   return (
     <div className="App" style={appStyle}>
       <Header title="GraphQL test" />
@@ -107,9 +140,21 @@ function App() {
         The final results are summarised in a report and changes from previous
         surveys analysed and visualised using a variety of tools.
       </TextBlock>
-      <Card id="card-1" results={surveyResults} />
-      <Card id="card-2" results={surveyResults} />
-      <Card id="card-3" results={surveyResults} />
+      <Card
+        id="card1"
+        results={displayData}
+        changeHandler={changeDisplayHandler}
+      />
+      <Card
+        id="card2"
+        results={displayData}
+        changeHandler={changeDisplayHandler}
+      />
+      <Card
+        id="card3"
+        results={displayData}
+        changeHandler={changeDisplayHandler}
+      />
       <TextBlock>
         The State of JavaScript Survey is created and maintained by Sacha Greif
         (Design, writing, coding) and Raphaël Benitte (Data analysis, data

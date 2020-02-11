@@ -4,24 +4,12 @@ import Cell from "./Cell";
 import Picker from "./Picker";
 
 const Card = props => {
-  const [queryTool, setqueryTool] = useState("none");
-  const [results, setResults] = useState({
-    awareness: 0,
-    interest: 0,
-    satisfaction: 0,
-    participants: 0
-  });
-
+  const [queryTool, setQueryTool] = useState([props.id, "none"]);
+  
   const toolChangedHandler = toolName => {
-    setqueryTool(toolName);
-    setResults({
-      awareness: props.results[toolName].awareness,
-      interest: props.results[toolName].interest,
-      satisfaction: props.results[toolName].satisfaction,
-      participants: props.results[toolName].total
-    });
-    console.log(`Tool changed to: ${toolName}`);
-    console.log(results.awareness);
+    setQueryTool([props.id, toolName])
+    props.changeHandler(queryTool);
+    console.log(`Tool changed to: ${queryTool}`);
   };
 
   return (
@@ -29,10 +17,10 @@ const Card = props => {
       <Cell style={{ flex: "1" }}>
         <Picker changeTool={toolChangedHandler} value={queryTool} />
       </Cell>
-      <Cell style={{ flex: "2" }}>Awareness: {results.awareness}%</Cell>
-      <Cell style={{ flex: "2" }}>Interest: {results.interest}%</Cell>
-      <Cell style={{ flex: "2" }}>Satisfaction: {results.satisfaction}%</Cell>
-      <Cell style={{ flex: "2" }}>Participants: {results.participants}</Cell>
+      <Cell style={{ flex: "2" }}>Awareness: {props.results[props.id].awareness}%</Cell>
+      <Cell style={{ flex: "2" }}>Interest: {props.results[props.id].interest}%</Cell>
+      <Cell style={{ flex: "2" }}>Satisfaction: {props.results[props.id].satisfaction}%</Cell>
+      <Cell style={{ flex: "2" }}>Participants: {props.results.participants}</Cell>
     </div>
   );
 };
