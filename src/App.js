@@ -26,7 +26,9 @@ const [displaydata setdisplayData] = useState({
 
 The state values in the object will need to be passed to Card.js and displayed and changes to the selected tool
 will have to be passed up to App.js to modify the state object when triggered by a Picker selection activating
-the "toolChangedHandler"
+the "toolChangedHandler" and displaying results[{props.id}].awareness ???
+
+Need to also include values when "none" selected
 
 Also - check out useReducer() as an alternative to useState to see if it works better with this problem
 
@@ -90,7 +92,6 @@ for (let i = 0; i < toolList.length; i++) {
     })
     .catch(console.error);
 } // -- end of read and process survey results --
-console.log(surveyResults);
 
 function App() {
   return (

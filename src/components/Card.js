@@ -21,7 +21,7 @@ const Card = props => {
       participants: props.results[toolName].total
     });
     console.log(`Tool changed to: ${toolName}`);
-    console.log(results);
+    console.log(results.awareness);
   };
 
   return (
