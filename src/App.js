@@ -2,7 +2,7 @@
    M Allen - 2020
 */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Card from "./components/Card";
 import Header from "./components/Header";
@@ -70,6 +70,27 @@ for (let i = 0; i < toolList.length; i++) {
 } // -- end of read and process survey results --
 
 function App() {
+  // responsive sizing
+  const [width, setWidth] = useState(window.innerWidth);
+  const [height, setHeight] = React.useState(window.innerHeight);
+
+  const updateWidthAndHeight = () => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+    if (width < 400) {
+      textBlockStyle["fontSize"] = 8;
+    } else if (width < 600) {
+      textBlockStyle["fontSize"] = 10;
+    } else {
+      textBlockStyle["fontSize"] = 16;
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", updateWidthAndHeight);
+    return () => window.removeEventListener("resize", updateWidthAndHeight);
+  });
+
   // values displayed in cards
   const [displayData, setdisplayData] = useState({
     card1: {
@@ -112,39 +133,48 @@ function App() {
   };
 
   return (
-    <div className="App" style={appStyle}>
+    <div className="App" style={{...appStyle}}>
       <Header title="GraphQL test" />
-      <TextBlock>
+      <TextBlock style={{...textBlockStyle}}>
         The State of Javascript survey collected responses from over 22,000
         developers in 2019. Participants were asked a series of questions about
         different aspects of JavaScript, including front and back-end
-        frameworks, ES6, mobile development, and testing.
+        frameworks, ES6, mobile development, and testing. The final results are
+        summarised in a report and changes from previous surveys analysed and
+        visualised using a variety of tools.
       </TextBlock>
-      <TextBlock>
-        The final results are summarised in a report and changes from previous
-        surveys analysed and visualised using a variety of tools.
-      </TextBlock>
+      <div style={{...linkStyle, ...textBlockStyle}}>
+        Full results are available at the{" "}
+        <a href={"https://2019.stateofjs.com/"}>
+          2019 State of Java website.
+        </a>
+      </div>
       <Card
         id="card1"
+        style={{ maxWidth: "100%" }}
         results={displayData}
         changeHandler={changeDisplayHandler}
+        width={width}
       />
       <Card
         id="card2"
         results={displayData}
         changeHandler={changeDisplayHandler}
+        width={width}
       />
       <Card
         id="card3"
         results={displayData}
         changeHandler={changeDisplayHandler}
+        width={width}
       />
-      <TextBlock>
+      <TextBlock style={{...textBlockStyle}}>
         The State of JavaScript Survey is created and maintained by Sacha Greif
         (Design, writing, coding) and Raphaël Benitte (Data analysis, data
         visualizations). Through their website stateofjs.com the raw data is
         made available through a GraphQL API. This app uses GraphQL queries to
-        access some of the results and summarises them.
+        access and display the 2019 results for a selection of JavaScript tools
+        and frameworks.
       </TextBlock>
     </div>
   );
@@ -153,7 +183,17 @@ function App() {
 const appStyle = {
   display: "flex",
   flexDirection: "column",
-  flex: 1
+  flex: 1,
+  maxWidth: "100%"
 };
+
+const linkStyle = {
+  color: "#555",
+  padding: 5
+};
+
+let textBlockStyle = {
+  fontSize: 16
+}
 
 export default App;
