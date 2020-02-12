@@ -1,18 +1,5 @@
-/* 
-N.B. need to restructure code so that all the state functionality is handled in the App.js file while
-Card.js concentrates on presentation and Picker.js handles selection of tool 
-In App.js need to use useState() to setup a JS object for display fields on the 3 cards - e.g.
-
-
-
-The state values in the object will need to be passed to Card.js and displayed and changes to the selected tool
-will have to be passed up to App.js to modify the state object when triggered by a Picker selection activating
-the "toolChangedHandler" and displaying results[{props.id}].awareness ???
-
-Need to also include values when "none" selected
-
-Also - check out useReducer() as an alternative to useState to see if it works better with this problem
-
+/* Using React and a GraphQL query to display survey data
+   M Allen - 2020
 */
 
 import React, { useState } from "react";
@@ -24,7 +11,14 @@ import "./App.css";
 
 // read and process survey results
 let toolList = ["react", "angular", "vuejs", "jest", "reactnative"];
-let surveyResults = {};
+let surveyResults = {
+  none: {
+    total: 0,
+    awareness: 0,
+    interest: 0,
+    satisfaction: 0
+  }
+};
 
 for (let i = 0; i < toolList.length; i++) {
   // build query
@@ -47,6 +41,7 @@ for (let i = 0; i < toolList.length; i++) {
       }
     }
   }`;
+
   // execute query
   const url = "https://api.stateofjs.com/graphql";
   const opts = {
@@ -82,49 +77,38 @@ function App() {
       awareness: 0,
       interest: 0,
       satisfaction: 0,
-      participants: 0
+      total: 0
     },
     card2: {
       tool: "none",
       awareness: 0,
       interest: 0,
       satisfaction: 0,
-      participants: 0
+      total: 0
     },
     card3: {
       tool: "none",
       awareness: 0,
       interest: 0,
       satisfaction: 0,
-      participants: 0
+      total: 0
     }
   });
 
   // change displayed values based on Picker choice
-  const changeDisplayHandler = (changes) => {
-    if (changes[1] === "none") {
+  const changeDisplayHandler = newTool => {
+    for (let key in newTool) {
       setdisplayData({
         ...displayData,
-        [changes[0]]: {
-          awareness: 0,
-          interest: 0,
-          satisfaction: 0,
-          participants: 0
-        }
-      });
-    } else {
-      setdisplayData({
-        ...displayData,
-        [changes[0]]: {
-          awareness: surveyResults[changes[1]].awareness,
-          interest: surveyResults[changes[1]].interest,
-          satisfaction: surveyResults[changes[1]].satisfaction,
-          participants: surveyResults[changes[1]].participants
+        [key]: {
+          tool: newTool[key],
+          awareness: surveyResults[newTool[key]].awareness,
+          interest: surveyResults[newTool[key]].interest,
+          satisfaction: surveyResults[newTool[key]].satisfaction,
+          total: surveyResults[newTool[key]].total
         }
       });
     }
-    setdisplayData({ ...displayData, [changes[0]]: changes[1] });
-    console.log(displayData)
   };
 
   return (

@@ -1,14 +1,18 @@
 import React from "react";
 
 const Picker = props => {
+  const selecter = [props.cardId] + "selecter";
   const selectHandler = () => {
-    let e = document.getElementById("selecter").value;
-    props.changeTool(e);
+    let e = document.getElementById(selecter).value;
+    let chosenTool = {
+      [props.cardId]: e
+    }
+    props.changeTool(chosenTool);
   };
   return (
     <div style={pickerStyle}>
       <select
-        id="selecter"
+        id={selecter}
         style={{ ...pickerStyle, ...props.style }}
         onChange={selectHandler}
       >
